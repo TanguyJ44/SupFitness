@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SupFitness</string>
+
+    <string name="title_weight">Poids</string>
+    <string name="title_statistics">Suivi du poids</string>
+    <string name="title_training">Entrainement</string>
+</resources>
