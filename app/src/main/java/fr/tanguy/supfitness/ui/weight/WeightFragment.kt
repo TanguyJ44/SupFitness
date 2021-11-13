@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.tanguy.supfitness.R
 import fr.tanguy.supfitness.databinding.FragmentWeightBinding
+import fr.tanguy.supfitness.ui.utils.SpacingItemRecyclerView
 
 class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
 
@@ -32,6 +33,8 @@ class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
 
         val allWeight = WeightObject.getAllWeights()
         val recyclerView: RecyclerView = requireView().findViewById(R.id.weightList)
+        val itemDecoration: SpacingItemRecyclerView = SpacingItemRecyclerView(30, 50)
+        recyclerView.addItemDecoration(itemDecoration)
         recyclerView.adapter = WeightAdapter(allWeight, this)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
