@@ -11,6 +11,11 @@ import fr.tanguy.supfitness.R
 import fr.tanguy.supfitness.databinding.FragmentWeightBinding
 import fr.tanguy.supfitness.ui.utils.SpacingItemRecyclerView
 
+import androidx.recyclerview.widget.ItemTouchHelper
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import fr.tanguy.supfitness.ui.utils.SwipeToDeleteCallback
+
+
 class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
 
     private var _binding: FragmentWeightBinding? = null
@@ -33,11 +38,29 @@ class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
 
         val allWeight = WeightObject.getAllWeights()
         val recyclerView: RecyclerView = requireView().findViewById(R.id.weightList)
-        val itemDecoration: SpacingItemRecyclerView = SpacingItemRecyclerView(30, 50)
+        val floatingActionButton: FloatingActionButton = requireView().findViewById(R.id.floatingActionButton)
+        val itemDecoration = SpacingItemRecyclerView(30, 50)
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(WeightAdapter(allWeight, this)))
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0 || dy < 0 && floatingActionButton.isShown) {
+                    floatingActionButton.hide()
+                }
+            }
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    floatingActionButton.show()
+                }
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
+
         recyclerView.addItemDecoration(itemDecoration)
         recyclerView.adapter = WeightAdapter(allWeight, this)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.setHasFixedSize(true)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+        recyclerView.setHasFixedSize(false)
     }
 
     override fun onDestroyView() {

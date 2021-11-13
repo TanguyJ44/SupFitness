@@ -18,6 +18,7 @@ object WeightObject {
     )
 
     fun getAllWeights() = weights
+    fun removeItem(position: Int) = weights.removeAt(position)
 
 }
 
