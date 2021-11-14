@@ -13,8 +13,7 @@ import fr.tanguy.supfitness.ui.utils.SpacingItemRecyclerView
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import fr.tanguy.supfitness.ui.utils.SwipeToDeleteCallback
-
+import fr.tanguy.supfitness.ui.utils.SwipeToDelete
 
 class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
 
@@ -37,10 +36,12 @@ class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
         super.onViewCreated(view, savedInstanceState)
 
         val allWeight = WeightObject.getAllWeights()
+        val adapter = WeightAdapter(allWeight, this)
         val recyclerView: RecyclerView = requireView().findViewById(R.id.weightList)
         val floatingActionButton: FloatingActionButton = requireView().findViewById(R.id.floatingActionButton)
         val itemDecoration = SpacingItemRecyclerView(30, 50)
-        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(WeightAdapter(allWeight, this)))
+        val swipeToDeleteCallback = activity?.let { SwipeToDelete(it, adapter) }
+        val itemTouchHelper = swipeToDeleteCallback?.let { ItemTouchHelper(it) }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -59,7 +60,7 @@ class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
         recyclerView.addItemDecoration(itemDecoration)
         recyclerView.adapter = WeightAdapter(allWeight, this)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+        itemTouchHelper?.attachToRecyclerView(recyclerView)
         recyclerView.setHasFixedSize(false)
     }
 

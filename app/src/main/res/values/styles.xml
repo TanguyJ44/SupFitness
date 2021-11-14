@@ -3,4 +3,7 @@
     <style name="toolbar_style" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorOnPrimary">@color/white</item>
     </style>
+    <style name="digital_style" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/digital</item>
+    </style>
 </resources>

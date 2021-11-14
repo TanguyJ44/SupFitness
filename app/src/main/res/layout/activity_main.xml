@@ -49,11 +49,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/top_toolbar_menu" />
 
-    <!-- <ImageView
-        android:id="@+id/image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@mipmap/ic_launcher" /> -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:translationZ="8dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="@id/nav_view"
+        app:layout_constraintStart_toStartOf="@id/nav_view"
+        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment_activity_main"
+        app:srcCompat="@drawable/scale" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

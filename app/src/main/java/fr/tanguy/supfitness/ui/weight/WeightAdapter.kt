@@ -23,9 +23,9 @@ class WeightAdapter(
     override fun onBindViewHolder(holder: WeightViewHolder, index: Int) {
         val currentItem = weightList[index]
 
-        if (index == 0) {
+        /*if (index == 0) {
             holder.itemView.visibility = View.GONE
-        }
+        }*/
 
         holder.weightListWeight.text = "${currentItem.weight}"
         holder.weightListDate.text = "${currentItem.date}"

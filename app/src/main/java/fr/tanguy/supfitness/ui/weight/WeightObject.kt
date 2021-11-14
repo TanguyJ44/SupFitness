@@ -6,15 +6,25 @@ object WeightObject {
 
     private val weights = mutableListOf(
         Weight(59.2, Date()),
+        Weight(59.6, Date()),
+        Weight(59.4, Date()),
+        Weight(59.0, Date()),
+        Weight(59.8, Date()),
+        Weight(59.9, Date()),
+        Weight(59.1, Date()),
+        Weight(59.3, Date()),
+        Weight(59.1, Date()),
+        Weight(59.5, Date()),
+        Weight(59.7, Date()),
+        Weight(59.8, Date()),
+        Weight(59.7, Date()),
         Weight(59.2, Date()),
+        Weight(59.1, Date()),
         Weight(59.2, Date()),
+        Weight(59.4, Date()),
+        Weight(59.5, Date()),
         Weight(59.2, Date()),
-        Weight(59.2, Date()),
-        Weight(59.2, Date()),
-        Weight(59.2, Date()),
-        Weight(59.2, Date()),
-        Weight(59.2, Date()),
-        Weight(59.2, Date())
+        Weight(59.8, Date())
     )
 
     fun getAllWeights() = weights
