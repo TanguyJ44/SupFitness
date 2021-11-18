@@ -50,7 +50,7 @@
         app:menu="@menu/top_toolbar_menu" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewToolbar"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:translationZ="8dp"

@@ -11,8 +11,11 @@
         android:id="@+id/weightList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="110dp"
+        android:paddingBottom="80dp"
         android:scrollbars="none"
         android:background="@color/light_gray"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +23,7 @@
         tools:listitem="@layout/weight_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/addWeightButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"

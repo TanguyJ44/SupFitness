@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/weight_add_popup_background">
+
+    <TextView
+        android:id="@+id/popupWeightTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="Ajouter un poids"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <Button
+        android:id="@+id/popupWeightCloseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="220dp"
+        android:background="@android:color/transparent"
+        android:drawableRight="@drawable/ic_baseline_clear"
+        android:drawableTint="@color/white"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/popupWeightLeftDoubleButton"
+        android:layout_width="36dp"
+        android:layout_height="55dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/light_blue"
+        android:drawableTop="@drawable/ic_baseline_keyboard_double_arrow_left_24"
+        android:drawableTint="@color/white"
+        android:text="" />
+
+    <Button
+        android:id="@+id/popupWeightLeftSimpleButton"
+        android:layout_width="36dp"
+        android:layout_height="55dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="67dp"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/light_blue"
+        android:drawableTop="@drawable/ic_baseline_keyboard_arrow_left_24"
+        android:drawableTint="@color/white"
+        android:text="" />
+
+    <EditText
+        android:id="@+id/popupWeightEdit"
+        android:layout_width="83dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/popupWeightTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="21dp"
+        android:background="@color/white"
+        android:ems="5"
+        android:fontFamily="@font/digital"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        android:text="50.5"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/popupWeightRightSimpleButton"
+        android:layout_width="36dp"
+        android:layout_height="55dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="200dp"
+        android:backgroundTint="@color/light_blue"
+        android:drawableTop="@drawable/ic_baseline_keyboard_arrow_right_24"
+        android:drawableTint="@color/white"
+        android:text="" />
+
+    <Button
+        android:id="@+id/popupWeightRightDoubleButton"
+        android:layout_width="36dp"
+        android:layout_height="55dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="243dp"
+        android:backgroundTint="@color/light_blue"
+        android:drawableTop="@drawable/ic_baseline_keyboard_double_arrow_right_24"
+        android:drawableTint="@color/white"
+        android:text="" />
+
+    <DatePicker
+        android:id="@+id/popupWeightDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:layout_below="@+id/popupWeightEdit"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="1dp"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:calendarTextColor="@color/white"/>
+
+    <Button
+        android:id="@+id/popupWeightValidate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/popupWeightEdit"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="106dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/light_blue"
+        android:backgroundTint="@color/white"
+        android:text="Ajouter" />
+
+
+
+</RelativeLayout>
