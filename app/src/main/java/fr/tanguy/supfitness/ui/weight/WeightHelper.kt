@@ -1,40 +1,26 @@
 package fr.tanguy.supfitness.ui.weight
 
-import java.util.*
+import fr.tanguy.supfitness.database.WeightDao
 
 object WeightHelper {
 
-    //private val weights = mutableListOf<Weight>()
+    private var weights = mutableListOf<fr.tanguy.supfitness.database.Weight>()
 
-    private val weights = mutableListOf(
-            Weight(59.2, Date()),
-            Weight(59.6, Date()),
-            Weight(59.4, Date()),
-            Weight(59.0, Date()),
-            Weight(59.8, Date()),
-            Weight(59.9, Date()),
-            Weight(59.1, Date()),
-            Weight(59.3, Date()),
-            Weight(59.1, Date()),
-            Weight(59.5, Date()),
-            Weight(59.7, Date()),
-            Weight(59.8, Date()),
-            Weight(59.7, Date()),
-            Weight(59.2, Date()),
-            Weight(59.1, Date()),
-            Weight(59.2, Date()),
-            Weight(59.4, Date()),
-            Weight(59.5, Date()),
-            Weight(59.2, Date()),
-            Weight(59.8, Date())
-    )
+    fun initWeight(dbWeight: List<fr.tanguy.supfitness.database.Weight>) {
+        weights = dbWeight.toMutableList()
+    }
 
     fun getAllWeights() = weights
-    fun removeItem(position: Int) = weights.removeAt(position)
-    fun addItem(weight: Double, date: Date) = weights.add(0, Weight(weight, date))
-}
 
-data class Weight(
-        val weight: Double,
-        val date: Date,
-)
+    fun addItem(weightDao:WeightDao, newWeight: fr.tanguy.supfitness.database.Weight) {
+        weightDao.insertWeight(newWeight)
+        weights.add(newWeight)
+
+        //initWeight(weightDao.getAll())
+    }
+
+    fun removeItem(weightDao:WeightDao, position: Int) {
+        weightDao.deleteWeight(weights[position])
+        weights.removeAt(position)
+    }
+}

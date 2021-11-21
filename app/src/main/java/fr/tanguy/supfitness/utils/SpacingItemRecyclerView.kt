@@ -1,4 +1,4 @@
-package fr.tanguy.supfitness.ui.utils
+package fr.tanguy.supfitness.utils
 
 import android.graphics.Rect
 import android.view.View

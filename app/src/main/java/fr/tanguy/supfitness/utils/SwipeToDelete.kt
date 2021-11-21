@@ -1,8 +1,7 @@
-package fr.tanguy.supfitness.ui.utils
+package fr.tanguy.supfitness.utils
 
 import android.content.Context
 import android.graphics.*
-import fr.tanguy.supfitness.ui.weight.WeightHelper.removeItem
 import fr.tanguy.supfitness.ui.weight.WeightAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.graphics.drawable.ColorDrawable
@@ -10,10 +9,11 @@ import android.graphics.drawable.Drawable
 import androidx.recyclerview.widget.RecyclerView
 import androidx.core.content.ContextCompat
 import fr.tanguy.supfitness.R
-import fr.tanguy.supfitness.ui.weight.WeightHelper
+import fr.tanguy.supfitness.database.WeightDao
 import fr.tanguy.supfitness.ui.weight.WeightHelper.getAllWeights
+import fr.tanguy.supfitness.ui.weight.WeightHelper.removeItem
 
-class SwipeToDelete(mContext: Context, private val mAdapter: WeightAdapter) :
+class SwipeToDelete(mContext: Context, private val mAdapter: WeightAdapter, val weightDao: WeightDao) :
     ItemTouchHelper.Callback() {
     private val mClearPaint: Paint = Paint()
     private val mBackground: ColorDrawable = ColorDrawable()
@@ -39,7 +39,7 @@ class SwipeToDelete(mContext: Context, private val mAdapter: WeightAdapter) :
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.adapterPosition
 
-        removeItem(position)
+        removeItem(weightDao, position)
         mAdapter.notifyItemRemoved(position)
         mAdapter.notifyItemRangeChanged(position, getAllWeights().size)
     }

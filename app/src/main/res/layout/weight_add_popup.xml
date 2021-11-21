@@ -67,6 +67,7 @@
         android:fontFamily="@font/digital"
         android:gravity="center"
         android:inputType="numberDecimal"
+        android:maxLength="5"
         android:text="50.5"
         android:textColor="@color/black" />
 

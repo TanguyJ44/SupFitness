@@ -9,19 +9,24 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.tanguy.supfitness.R
-import fr.tanguy.supfitness.ui.utils.SpacingItemRecyclerView
+import fr.tanguy.supfitness.utils.SpacingItemRecyclerView
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import fr.tanguy.supfitness.ui.utils.SwipeToDelete
+import fr.tanguy.supfitness.utils.SwipeToDelete
 
 import android.view.Gravity
 
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.widget.*
+import fr.tanguy.supfitness.MainActivity
+import fr.tanguy.supfitness.database.AppDatabase
 import fr.tanguy.supfitness.databinding.FragmentWeightBinding
+import java.util.*
+import kotlin.math.roundToInt
 
-class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
+
+class WeightFragment : Fragment() {
 
     private var _binding: FragmentWeightBinding? = null
 
@@ -42,12 +47,18 @@ class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val db = (activity as MainActivity).db
+        val weightDao = (db as AppDatabase).weightDao()
+
+        WeightHelper.initWeight(weightDao.getAll())
+
         val allWeight = WeightHelper.getAllWeights()
-        val adapter = WeightAdapter(allWeight, this)
+        val adapter = WeightAdapter(allWeight)
         val recyclerView: RecyclerView = requireView().findViewById(R.id.weightList)
-        val floatingActionButton: FloatingActionButton = requireView().findViewById(R.id.addWeightButton)
+        val floatingActionButton: FloatingActionButton =
+            requireView().findViewById(R.id.addWeightButton)
         val itemDecoration = SpacingItemRecyclerView(30, 50)
-        val swipeToDeleteCallback = activity?.let { SwipeToDelete(it, adapter) }
+        val swipeToDeleteCallback = activity?.let { SwipeToDelete(it, adapter, weightDao) }
         val itemTouchHelper = swipeToDeleteCallback?.let { ItemTouchHelper(it) }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -56,6 +67,7 @@ class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
                     floatingActionButton.hide()
                 }
             }
+
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     floatingActionButton.show()
@@ -65,21 +77,20 @@ class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
         })
 
         recyclerView.addItemDecoration(itemDecoration)
-        recyclerView.adapter = WeightAdapter(allWeight, this)
+        recyclerView.adapter = WeightAdapter(allWeight)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         itemTouchHelper?.attachToRecyclerView(recyclerView)
         recyclerView.setHasFixedSize(false)
         recyclerView.adapter = adapter
 
-        val view = activity?.findViewById<View>(R.id.imageViewToolbar)
+        val actView = activity?.findViewById<View>(R.id.imageViewToolbar)
 
-        if (view is ImageView) {
-            val imageView = view
-            imageView.setImageResource(R.drawable.scale)
+        if (actView is ImageView) {
+            actView.setImageResource(R.drawable.scale)
         }
 
         val addWeightButton: FloatingActionButton = requireView().findViewById(R.id.addWeightButton)
-        addWeightButton.setOnClickListener(View.OnClickListener {
+        addWeightButton.setOnClickListener {
 
             val inflater = activity?.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater?
             val popupView: View = inflater!!.inflate(R.layout.weight_add_popup, null)
@@ -97,25 +108,74 @@ class WeightFragment : Fragment(), WeightAdapter.WeightItemListener {
                 popupWindow.dismiss()
             }
 
-            /*val buttonAddWeight: Button = popupView.findViewById(R.id.buttonAddWeight)
-            buttonAddWeight.setOnClickListener {
+            val popupWeightEdit: EditText = popupView.findViewById(R.id.popupWeightEdit)
+            val popupWeightDatePicker: DatePicker =
+                popupView.findViewById(R.id.popupWeightDatePicker)
+            var popupWeightValue = popupWeightEdit.text.toString().toDouble()
 
-                WeightHelper.addItem(10.2, Date())
+            // LEFT DOUBLE
+            val popupWeightLeftDoubleButton: Button =
+                popupView.findViewById(R.id.popupWeightLeftDoubleButton)
+            popupWeightLeftDoubleButton.setOnClickListener {
+                popupWeightValue -= 1
+                popupWeightValue = (popupWeightValue * 100).roundToInt().toDouble() / 100
+                popupWeightEdit.setText(popupWeightValue.toString())
+            }
+
+            // LEFT SIMPLE
+            val popupWeightLeftSimpleButton: Button =
+                popupView.findViewById(R.id.popupWeightLeftSimpleButton)
+            popupWeightLeftSimpleButton.setOnClickListener {
+                popupWeightValue -= 0.1
+                popupWeightValue = (popupWeightValue * 100).roundToInt().toDouble() / 100
+                popupWeightEdit.setText(popupWeightValue.toString())
+            }
+
+            // RIGHT SIMPLE
+            val popupWeightRightSimpleButton: Button =
+                popupView.findViewById(R.id.popupWeightRightSimpleButton)
+            popupWeightRightSimpleButton.setOnClickListener {
+                popupWeightValue += 0.1
+                popupWeightValue = (popupWeightValue * 100).roundToInt().toDouble() / 100
+                popupWeightEdit.setText(popupWeightValue.toString())
+            }
+
+            // RIGHT DOUBLE
+            val popupWeightRightDoubleButton: Button =
+                popupView.findViewById(R.id.popupWeightRightDoubleButton)
+            popupWeightRightDoubleButton.setOnClickListener {
+                popupWeightValue += 1
+                popupWeightValue = (popupWeightValue * 100).roundToInt().toDouble() / 100
+                popupWeightEdit.setText(popupWeightValue.toString())
+            }
+
+            val popupWeightValidate: Button = popupView.findViewById(R.id.popupWeightValidate)
+            popupWeightValidate.setOnClickListener {
+
+                WeightHelper.addItem(
+                    weightDao,
+                    fr.tanguy.supfitness.database.Weight(
+                        0,
+                        popupWeightValue,
+                        Date(
+                            popupWeightDatePicker.year,
+                            popupWeightDatePicker.month,
+                            popupWeightDatePicker.dayOfMonth
+                        )
+                    )
+                )
+
                 recyclerView.adapter = adapter
+                popupWindow.dismiss()
+            }
 
-            }*/
-
-        })
+        }
 
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onWeightItemClick(weight: Weight) {
-        return
     }
 
 }
