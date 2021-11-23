@@ -22,6 +22,19 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/weight_item" />
 
+    <TextView
+        android:id="@+id/weightEmptyItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="Pour ajouter votre premier poids,\n utiliser le bouton (+) ci-dessous"
+        app:layout_constraintBottom_toBottomOf="@+id/weightList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/weightList" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addWeightButton"
         android:layout_width="wrap_content"

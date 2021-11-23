@@ -12,7 +12,7 @@ interface WeightDao {
     fun getAllById(weightId: IntArray): List<Weight>
 
     @Insert
-    fun insertWeight(vararg weight: Weight)
+    fun insertWeight(weight: Weight): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(weight: Weight)

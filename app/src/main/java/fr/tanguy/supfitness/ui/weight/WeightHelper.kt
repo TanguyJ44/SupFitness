@@ -1,22 +1,26 @@
 package fr.tanguy.supfitness.ui.weight
 
+import fr.tanguy.supfitness.database.Weight
 import fr.tanguy.supfitness.database.WeightDao
 
 object WeightHelper {
 
-    private var weights = mutableListOf<fr.tanguy.supfitness.database.Weight>()
+    private var weights = mutableListOf<Weight>()
 
-    fun initWeight(dbWeight: List<fr.tanguy.supfitness.database.Weight>) {
-        weights = dbWeight.toMutableList()
+    fun initWeight(dbWeight: List<Weight>) {
+        weights = dbWeight.sortedByDescending { it.date }.toMutableList()
     }
 
     fun getAllWeights() = weights
 
-    fun addItem(weightDao:WeightDao, newWeight: fr.tanguy.supfitness.database.Weight) {
-        weightDao.insertWeight(newWeight)
-        weights.add(newWeight)
+    fun addItem(weightDao:WeightDao, newWeight: Weight) {
+        val generatedId: Long = weightDao.insertWeight(newWeight)
 
-        //initWeight(weightDao.getAll())
+        var weight: Weight = newWeight
+        weight.id = generatedId.toInt()
+
+        weights.add(weight)
+        weights.sortByDescending { it.date }
     }
 
     fun removeItem(weightDao:WeightDao, position: Int) {

@@ -58,7 +58,8 @@ class WeightFragment : Fragment() {
         val floatingActionButton: FloatingActionButton =
             requireView().findViewById(R.id.addWeightButton)
         val itemDecoration = SpacingItemRecyclerView(30, 50)
-        val swipeToDeleteCallback = activity?.let { SwipeToDelete(it, adapter, weightDao) }
+        val weightEmptyItems: TextView = requireView().findViewById(R.id.weightEmptyItems)
+        val swipeToDeleteCallback = activity?.let { SwipeToDelete(it, adapter, weightDao, weightEmptyItems) }
         val itemTouchHelper = swipeToDeleteCallback?.let { ItemTouchHelper(it) }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -87,6 +88,12 @@ class WeightFragment : Fragment() {
 
         if (actView is ImageView) {
             actView.setImageResource(R.drawable.scale)
+        }
+
+        if (weightDao.getAll().isEmpty()) {
+            weightEmptyItems.visibility = TextView.VISIBLE
+        } else {
+            weightEmptyItems.visibility = TextView.GONE
         }
 
         val addWeightButton: FloatingActionButton = requireView().findViewById(R.id.addWeightButton)
@@ -159,11 +166,17 @@ class WeightFragment : Fragment() {
                         popupWeightValue,
                         Date(
                             popupWeightDatePicker.year,
-                            popupWeightDatePicker.month,
+                            popupWeightDatePicker.month + 1,
                             popupWeightDatePicker.dayOfMonth
                         )
                     )
                 )
+
+                if (weightDao.getAll().isEmpty()) {
+                    weightEmptyItems.visibility = TextView.VISIBLE
+                } else {
+                    weightEmptyItems.visibility = TextView.GONE
+                }
 
                 recyclerView.adapter = adapter
                 popupWindow.dismiss()

@@ -1,5 +1,6 @@
 package fr.tanguy.supfitness.ui.weight
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +20,12 @@ class WeightAdapter(
         return WeightViewHolder(itemView)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: WeightViewHolder, index: Int) {
         val currentItem = weightList[index]
 
         holder.weightListWeight.text = "${currentItem.weight}"
-        holder.weightListDate.text = "${currentItem.date}"
+        holder.weightListDate.text = "${currentItem.date?.date} / ${currentItem.date?.month} / ${currentItem.date?.year}"
     }
 
     override fun getItemCount() = weightList.size

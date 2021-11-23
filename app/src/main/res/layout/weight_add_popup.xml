@@ -99,6 +99,7 @@
 
     <DatePicker
         android:id="@+id/popupWeightDatePicker"
+        android:theme="@style/DatePicker"
         android:layout_width="wrap_content"
         android:layout_height="140dp"
         android:layout_below="@+id/popupWeightEdit"

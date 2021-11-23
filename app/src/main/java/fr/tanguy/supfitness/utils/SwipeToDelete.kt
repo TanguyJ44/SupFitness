@@ -6,6 +6,7 @@ import fr.tanguy.supfitness.ui.weight.WeightAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.core.content.ContextCompat
 import fr.tanguy.supfitness.R
@@ -13,7 +14,7 @@ import fr.tanguy.supfitness.database.WeightDao
 import fr.tanguy.supfitness.ui.weight.WeightHelper.getAllWeights
 import fr.tanguy.supfitness.ui.weight.WeightHelper.removeItem
 
-class SwipeToDelete(mContext: Context, private val mAdapter: WeightAdapter, val weightDao: WeightDao) :
+class SwipeToDelete(mContext: Context, private val mAdapter: WeightAdapter, val weightDao: WeightDao, val itemText: TextView) :
     ItemTouchHelper.Callback() {
     private val mClearPaint: Paint = Paint()
     private val mBackground: ColorDrawable = ColorDrawable()
@@ -42,6 +43,12 @@ class SwipeToDelete(mContext: Context, private val mAdapter: WeightAdapter, val 
         removeItem(weightDao, position)
         mAdapter.notifyItemRemoved(position)
         mAdapter.notifyItemRangeChanged(position, getAllWeights().size)
+
+        if (weightDao.getAll().isEmpty()) {
+            itemText.visibility = TextView.VISIBLE
+        } else {
+            itemText.visibility = TextView.GONE
+        }
     }
 
     override fun onChildDraw(
