@@ -13,6 +13,18 @@ object WeightHelper {
 
     fun getAllWeights() = weights
 
+    fun getSize() = weights.size
+
+    fun getLastWeight() = weights[0].weight
+
+    fun getMaxWeight() = weights.maxOfOrNull { it.weight!! }
+
+    fun getMinWeight() = weights.minOfOrNull { it.weight!! }
+
+    fun getMaxDate() = weights[0].date
+
+    fun getMinDate() = weights[getSize() - 1].date
+
     fun addItem(weightDao:WeightDao, newWeight: Weight) {
         val generatedId: Long = weightDao.insertWeight(newWeight)
 

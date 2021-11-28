@@ -59,7 +59,8 @@ class WeightFragment : Fragment() {
             requireView().findViewById(R.id.addWeightButton)
         val itemDecoration = SpacingItemRecyclerView(30, 50)
         val weightEmptyItems: TextView = requireView().findViewById(R.id.weightEmptyItems)
-        val swipeToDeleteCallback = activity?.let { SwipeToDelete(it, adapter, weightDao, weightEmptyItems) }
+        val swipeToDeleteCallback =
+            activity?.let { SwipeToDelete(it, adapter, weightDao, weightEmptyItems) }
         val itemTouchHelper = swipeToDeleteCallback?.let { ItemTouchHelper(it) }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -116,6 +117,10 @@ class WeightFragment : Fragment() {
             }
 
             val popupWeightEdit: EditText = popupView.findViewById(R.id.popupWeightEdit)
+            if (WeightHelper.getSize() > 0) {
+                popupWeightEdit.setText(WeightHelper.getLastWeight().toString())
+            }
+
             val popupWeightDatePicker: DatePicker =
                 popupView.findViewById(R.id.popupWeightDatePicker)
             var popupWeightValue = popupWeightEdit.text.toString().toDouble()
@@ -124,24 +129,31 @@ class WeightFragment : Fragment() {
             val popupWeightLeftDoubleButton: Button =
                 popupView.findViewById(R.id.popupWeightLeftDoubleButton)
             popupWeightLeftDoubleButton.setOnClickListener {
-                popupWeightValue -= 1
-                popupWeightValue = (popupWeightValue * 100).roundToInt().toDouble() / 100
-                popupWeightEdit.setText(popupWeightValue.toString())
+                popupWeightValue = popupWeightEdit.text.toString().toDouble()
+                if (popupWeightValue - 1 >= 0.0) {
+                    popupWeightValue -= 1
+                    popupWeightValue = (popupWeightValue * 100).roundToInt().toDouble() / 100
+                    popupWeightEdit.setText(popupWeightValue.toString())
+                }
             }
 
             // LEFT SIMPLE
             val popupWeightLeftSimpleButton: Button =
                 popupView.findViewById(R.id.popupWeightLeftSimpleButton)
             popupWeightLeftSimpleButton.setOnClickListener {
-                popupWeightValue -= 0.1
-                popupWeightValue = (popupWeightValue * 100).roundToInt().toDouble() / 100
-                popupWeightEdit.setText(popupWeightValue.toString())
+                popupWeightValue = popupWeightEdit.text.toString().toDouble()
+                if (popupWeightValue - 0.1 >= 0.0) {
+                    popupWeightValue -= 0.1
+                    popupWeightValue = (popupWeightValue * 100).roundToInt().toDouble() / 100
+                    popupWeightEdit.setText(popupWeightValue.toString())
+                }
             }
 
             // RIGHT SIMPLE
             val popupWeightRightSimpleButton: Button =
                 popupView.findViewById(R.id.popupWeightRightSimpleButton)
             popupWeightRightSimpleButton.setOnClickListener {
+                popupWeightValue = popupWeightEdit.text.toString().toDouble()
                 popupWeightValue += 0.1
                 popupWeightValue = (popupWeightValue * 100).roundToInt().toDouble() / 100
                 popupWeightEdit.setText(popupWeightValue.toString())
@@ -151,6 +163,7 @@ class WeightFragment : Fragment() {
             val popupWeightRightDoubleButton: Button =
                 popupView.findViewById(R.id.popupWeightRightDoubleButton)
             popupWeightRightDoubleButton.setOnClickListener {
+                popupWeightValue = popupWeightEdit.text.toString().toDouble()
                 popupWeightValue += 1
                 popupWeightValue = (popupWeightValue * 100).roundToInt().toDouble() / 100
                 popupWeightEdit.setText(popupWeightValue.toString())
@@ -158,6 +171,8 @@ class WeightFragment : Fragment() {
 
             val popupWeightValidate: Button = popupView.findViewById(R.id.popupWeightValidate)
             popupWeightValidate.setOnClickListener {
+
+                popupWeightValue = popupWeightEdit.text.toString().toDouble()
 
                 WeightHelper.addItem(
                     weightDao,
