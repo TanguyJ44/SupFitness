@@ -24,6 +24,12 @@ import fr.tanguy.supfitness.database.AppDatabase
 import fr.tanguy.supfitness.databinding.FragmentWeightBinding
 import java.util.*
 import kotlin.math.roundToInt
+import android.content.Context.MODE_PRIVATE
+
+import android.content.SharedPreferences
+
+
+
 
 
 class WeightFragment : Fragment() {

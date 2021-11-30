@@ -4,4 +4,9 @@
     <string name="title_weight">Poids</string>
     <string name="title_statistics">Suivi du poids</string>
     <string name="title_training">Entrainement</string>
+
+    <string name="stat_7_days">7 jours glissants</string>
+    <string name="stat_30_days">30 jours glissants</string>
+    <string name="stat_90_days">90 jours glissants</string>
+    <string name="stat_total">Moyenne de vos poids</string>
 </resources>

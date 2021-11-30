@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import fr.tanguy.supfitness.R
 
@@ -16,6 +17,9 @@ import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
 import com.jjoe64.graphview.series.DataPoint
 import fr.tanguy.supfitness.ui.weight.WeightHelper
+import java.lang.Number
+import java.text.NumberFormat
+import java.util.*
 
 
 class StatisticsFragment : Fragment() {
@@ -45,15 +49,28 @@ class StatisticsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        statCalcTotal()
+
         val mSeries: LineGraphSeries<DataPoint?> = LineGraphSeries()
 
         val graph: GraphView = requireView().findViewById(R.id.graph) as GraphView
 
         val dataList = Array(WeightHelper.getSize()){ DataPoint(0.0, 0.0) }
 
+        var calendar = Calendar.getInstance()
+        var date = calendar.time
+
         var index = 0
         for (weight in WeightHelper.getAllWeights()) {
-            dataList[index] = DataPoint(weight.date, weight.weight!!)
+            calendar.set(weight.date!!.year, weight.date!!.month, weight.date!!.date)
+            date = calendar.time
+
+            //dataList[index] = DataPoint(weight.date!!.time.toDouble(), weight.weight!!)
+            dataList[index] = DataPoint(date, weight.weight!!)
+
+            //println("LOOP :: ${weight.date.time.toDouble()}")
+            println("LOOP :: ${date.time.toDouble()}")
+
             index += 1
         }
 
@@ -65,7 +82,7 @@ class StatisticsFragment : Fragment() {
 
         graph.addSeries(series)
 
-        graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
+        /*graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
             override fun formatLabel(value: Double, isValueX: Boolean): String {
                 return if (isValueX) {
                     super.formatLabel(value, isValueX)
@@ -73,14 +90,30 @@ class StatisticsFragment : Fragment() {
                     super.formatLabel(value, isValueX) + " Kg"
                 }
             }
-        }
+        }*/
 
         graph.gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
         graph.gridLabelRenderer.numHorizontalLabels = 3
 
         if (WeightHelper.getSize() > 0) {
-            graph.viewport.setMinX(WeightHelper.getMinDate()!!.time.toDouble())
-            graph.viewport.setMaxX(WeightHelper.getMaxDate()!!.time.toDouble())
+            //graph.viewport.setMinX(WeightHelper.getMinDate()!!.time.toDouble())
+            //graph.viewport.setMaxX(WeightHelper.getMaxDate()!!.time.toDouble())
+
+            calendar.set(WeightHelper.getMinDate()!!.year, WeightHelper.getMinDate()!!.month, WeightHelper.getMinDate()!!.date)
+            date = calendar.time
+            graph.viewport.setMinX(date.time.toDouble())
+
+            println("MIN-X :: ${date.time.toDouble()}")
+
+            calendar.set(WeightHelper.getMaxDate()!!.year, WeightHelper.getMaxDate()!!.month, WeightHelper.getMaxDate()!!.date)
+            date = calendar.time
+            graph.viewport.setMaxX(date.time.toDouble())
+
+            println("MAX-X :: ${date.time.toDouble()}")
+
+
+            //println("MIN-X :: ${WeightHelper.getMinDate()!!.time.toDouble()}")
+            //println("MAX-X :: ${WeightHelper.getMaxDate()!!.time.toDouble()}")
 
             graph.viewport.setMinY(WeightHelper.getMinWeight()!!)
             graph.viewport.setMaxY(WeightHelper.getMaxWeight()!!)
@@ -95,10 +128,24 @@ class StatisticsFragment : Fragment() {
         graph.legendRenderer.isVisible = false
 
         // Zooming and scrolling
-        //graph.viewport.isScalable = true; // enables horizontal zooming and scrolling
-        //graph.viewport.setScalableY(true); // enables vertical zooming and scrolling
-        graph.viewport.isScrollable = true
-        graph.viewport.setScrollableY(true)
+        graph.viewport.isScalable = true; // enables horizontal zooming and scrolling
+        graph.viewport.setScalableY(true); // enables vertical zooming and scrolling
+        //graph.viewport.isScrollable = true
+        //graph.viewport.setScrollableY(true)
+    }
+
+    private fun statCalcTotal() {
+        val titleCard4: TextView = requireView().findViewById(R.id.titleCard4)
+        var averageList: MutableList<Double> = mutableListOf()
+
+        for (weight in WeightHelper.getAllWeights()) {
+            averageList.add(weight.weight!!)
+        }
+
+        val format: NumberFormat = NumberFormat.getInstance()
+        format.minimumFractionDigits = 1
+
+        titleCard4.text = "${format.format(averageList.average())} Kg"
     }
 
     override fun onDestroyView() {
