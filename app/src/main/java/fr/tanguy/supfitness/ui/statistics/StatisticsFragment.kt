@@ -13,13 +13,13 @@ import com.jjoe64.graphview.series.LineGraphSeries
 import com.jjoe64.graphview.GraphView
 
 import fr.tanguy.supfitness.databinding.FragmentStatisticsBinding
-import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
 import com.jjoe64.graphview.series.DataPoint
 import fr.tanguy.supfitness.ui.weight.WeightHelper
-import java.lang.Number
 import java.text.NumberFormat
 import java.util.*
+import com.jjoe64.graphview.DefaultLabelFormatter
+import java.text.SimpleDateFormat
 
 
 class StatisticsFragment : Fragment() {
@@ -49,6 +49,9 @@ class StatisticsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        statCalc7Days()
+        statCalc30Days()
+        statCalc90Days()
         statCalcTotal()
 
         val mSeries: LineGraphSeries<DataPoint?> = LineGraphSeries()
@@ -62,90 +65,165 @@ class StatisticsFragment : Fragment() {
 
         var index = 0
         for (weight in WeightHelper.getAllWeights()) {
-            calendar.set(weight.date!!.year, weight.date!!.month, weight.date!!.date)
+            calendar = toCalendar(weight.date)
             date = calendar.time
 
-            //dataList[index] = DataPoint(weight.date!!.time.toDouble(), weight.weight!!)
             dataList[index] = DataPoint(date, weight.weight!!)
-
-            //println("LOOP :: ${weight.date.time.toDouble()}")
-            println("LOOP :: ${date.time.toDouble()}")
 
             index += 1
         }
 
         val series = LineGraphSeries(dataList)
 
-        series.isDrawDataPoints = true
-        series.dataPointsRadius = 10F
         series.isDrawBackground = true
 
         graph.addSeries(series)
 
-        /*graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
+        val sdf:SimpleDateFormat = SimpleDateFormat("dd/MM/yy")
+
+        graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
             override fun formatLabel(value: Double, isValueX: Boolean): String {
                 return if (isValueX) {
-                    super.formatLabel(value, isValueX)
+                    sdf.format(Date(value.toLong()))
                 } else {
-                    super.formatLabel(value, isValueX) + " Kg"
+                    super.formatLabel(value, isValueX)
                 }
             }
-        }*/
+        }
 
-        graph.gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
-        graph.gridLabelRenderer.numHorizontalLabels = 3
+        graph.gridLabelRenderer.setHorizontalLabelsAngle(1);
 
         if (WeightHelper.getSize() > 0) {
-            //graph.viewport.setMinX(WeightHelper.getMinDate()!!.time.toDouble())
-            //graph.viewport.setMaxX(WeightHelper.getMaxDate()!!.time.toDouble())
 
-            calendar.set(WeightHelper.getMinDate()!!.year, WeightHelper.getMinDate()!!.month, WeightHelper.getMinDate()!!.date)
+            calendar = toCalendar(WeightHelper.getMinDate())
             date = calendar.time
             graph.viewport.setMinX(date.time.toDouble())
 
-            println("MIN-X :: ${date.time.toDouble()}")
-
-            calendar.set(WeightHelper.getMaxDate()!!.year, WeightHelper.getMaxDate()!!.month, WeightHelper.getMaxDate()!!.date)
+            calendar = toCalendar(WeightHelper.getMaxDate())
             date = calendar.time
             graph.viewport.setMaxX(date.time.toDouble())
-
-            println("MAX-X :: ${date.time.toDouble()}")
-
-
-            //println("MIN-X :: ${WeightHelper.getMinDate()!!.time.toDouble()}")
-            //println("MAX-X :: ${WeightHelper.getMaxDate()!!.time.toDouble()}")
 
             graph.viewport.setMinY(WeightHelper.getMinWeight()!!)
             graph.viewport.setMaxY(WeightHelper.getMaxWeight()!!)
         }
 
-        graph.gridLabelRenderer.isHumanRounding = false
-
-        graph.addSeries(mSeries)
         graph.viewport.isYAxisBoundsManual = true
         graph.viewport.isXAxisBoundsManual = true
+        graph.gridLabelRenderer.isHumanRounding = false
 
         graph.legendRenderer.isVisible = false
 
-        // Zooming and scrolling
-        graph.viewport.isScalable = true; // enables horizontal zooming and scrolling
-        graph.viewport.setScalableY(true); // enables vertical zooming and scrolling
-        //graph.viewport.isScrollable = true
-        //graph.viewport.setScrollableY(true)
+        graph.viewport.isScalable = true;
+        graph.viewport.setScalableY(true);
+        graph.viewport.isScrollable = true
+        graph.viewport.setScrollableY(true)
     }
 
-    private fun statCalcTotal() {
-        val titleCard4: TextView = requireView().findViewById(R.id.titleCard4)
-        var averageList: MutableList<Double> = mutableListOf()
+    private fun toCalendar(date: Date?): Calendar? {
+        val cal = Calendar.getInstance()
+        cal.time = date
+        return cal
+    }
+
+    private fun statCalc7Days() {
+        val titleCard1: TextView = requireView().findViewById(R.id.titleCard1)
+        val maxDate = Date()
+        val minDate = Date(Date().year, Date().month, Date().date-7)
+        lateinit var checkDate: Date
+        var totalWeight = 0.0
+        var countWeight = 0
 
         for (weight in WeightHelper.getAllWeights()) {
-            averageList.add(weight.weight!!)
+            checkDate = Date(weight.date!!.year - 1900, weight.date.month - 1, weight.date.date)
+
+            if (checkDate.after(minDate) && checkDate.before(maxDate)) {
+                totalWeight += weight.weight!!
+                countWeight += 1
+            }
         }
 
         val format: NumberFormat = NumberFormat.getInstance()
         format.minimumFractionDigits = 1
 
-        titleCard4.text = "${format.format(averageList.average())} Kg"
+        if (countWeight == 0) {
+            titleCard1.text = "-"
+        } else {
+            titleCard1.text = "${format.format(totalWeight / countWeight)} Kg"
+        }
+    }
+
+    private fun statCalc30Days() {
+        val titleCard2: TextView = requireView().findViewById(R.id.titleCard2)
+        val maxDate = Date()
+        val minDate = Date(Date().year, Date().month, Date().date-30)
+        lateinit var checkDate: Date
+        var totalWeight = 0.0
+        var countWeight = 0
+
+        for (weight in WeightHelper.getAllWeights()) {
+            checkDate = Date(weight.date!!.year - 1900, weight.date.month - 1, weight.date.date)
+
+            if (checkDate.after(minDate) && checkDate.before(maxDate)) {
+                totalWeight += weight.weight!!
+                countWeight += 1
+            }
+        }
+
+        val format: NumberFormat = NumberFormat.getInstance()
+        format.minimumFractionDigits = 1
+
+        if (countWeight == 0) {
+            titleCard2.text = "-"
+        } else {
+            titleCard2.text = "${format.format(totalWeight / countWeight)} Kg"
+        }
+    }
+
+    private fun statCalc90Days() {
+        val titleCard3: TextView = requireView().findViewById(R.id.titleCard3)
+        val maxDate = Date()
+        val minDate = Date(Date().year, Date().month, Date().date-90)
+        lateinit var checkDate: Date
+        var totalWeight = 0.0
+        var countWeight = 0
+
+        for (weight in WeightHelper.getAllWeights()) {
+            checkDate = Date(weight.date!!.year - 1900, weight.date.month - 1, weight.date.date)
+
+            if (checkDate.after(minDate) && checkDate.before(maxDate)) {
+                totalWeight += weight.weight!!
+                countWeight += 1
+            }
+        }
+
+        val format: NumberFormat = NumberFormat.getInstance()
+        format.minimumFractionDigits = 1
+
+        if (countWeight == 0) {
+            titleCard3.text = "-"
+        } else {
+            titleCard3.text = "${format.format(totalWeight / countWeight)} Kg"
+        }
+    }
+
+    private fun statCalcTotal() {
+        val titleCard4: TextView = requireView().findViewById(R.id.titleCard4)
+        var averageList: MutableList<Double> = mutableListOf()
+        var countWeight = 0
+
+        for (weight in WeightHelper.getAllWeights()) {
+            averageList.add(weight.weight!!)
+            countWeight += 1
+        }
+
+        val format: NumberFormat = NumberFormat.getInstance()
+        format.minimumFractionDigits = 1
+
+        if (countWeight > 0) {
+            titleCard4.text = "${format.format(averageList.average())} Kg"
+        } else {
+            titleCard4.text = "-"
+        }
     }
 
     override fun onDestroyView() {

@@ -2,6 +2,7 @@ package fr.tanguy.supfitness.ui.weight
 
 import fr.tanguy.supfitness.database.Weight
 import fr.tanguy.supfitness.database.WeightDao
+import java.util.*
 
 object WeightHelper {
 
@@ -25,7 +26,21 @@ object WeightHelper {
 
     fun getMinDate() = weights[getSize() - 1].date
 
-    fun addItem(weightDao:WeightDao, newWeight: Weight) {
+    fun currentDateAlreadySaved(): Boolean {
+        val currentDate = Date()
+
+        for (weight in weights) {
+            if (weight.date!!.date == currentDate.date
+                && weight.date!!.month == currentDate.month
+                && weight.date!!.year == currentDate.year
+            ) {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun addItem(weightDao: WeightDao, newWeight: Weight) {
         val generatedId: Long = weightDao.insertWeight(newWeight)
 
         var weight: Weight = newWeight
@@ -35,7 +50,7 @@ object WeightHelper {
         weights.sortByDescending { it.date }
     }
 
-    fun removeItem(weightDao:WeightDao, position: Int) {
+    fun removeItem(weightDao: WeightDao, position: Int) {
         weightDao.deleteWeight(weights[position])
         weights.removeAt(position)
     }
