@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SupFitness</string>
+    <string name="app_name">SupFitness Training</string>
 
     <string name="title_weight">Poids</string>
     <string name="title_statistics">Suivi du poids</string>
@@ -9,4 +9,11 @@
     <string name="stat_30_days">30 jours glissants</string>
     <string name="stat_90_days">90 jours glissants</string>
     <string name="stat_total">Moyenne de vos poids</string>
+
+    <string name="settings_title">Mes préférences</string>
+    <string name="settings_notif">Rappel de pesée</string>
+
+    <string name="training_start_instruction">Pour commencer un nouvel entrainement, échauffez-vous puis appuyer sur le bouton start ci-dessous</string>
+    <string name="training_list">Mes entrainements</string>
+
 </resources>

@@ -15,7 +15,7 @@ interface WeightDao {
     fun insertWeight(weight: Weight): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(weight: Weight)
+    fun insert(weight: Weight)
 
     @Delete
     fun deleteWeight(weight: Weight)

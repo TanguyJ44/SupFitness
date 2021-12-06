@@ -6,39 +6,39 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import fr.tanguy.supfitness.R
 import fr.tanguy.supfitness.databinding.FragmentTrainingBinding
 
 class TrainingFragment : Fragment() {
 
-  private lateinit var trainingViewModel: TrainingViewModel
-private var _binding: FragmentTrainingBinding? = null
-  // This property is only valid between onCreateView and
-  // onDestroyView.
-  private val binding get() = _binding!!
+    private var _binding: FragmentTrainingBinding? = null
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
-    trainingViewModel =
-      ViewModelProvider(this).get(TrainingViewModel::class.java)
+    private val binding get() = _binding!!
 
-    _binding = FragmentTrainingBinding.inflate(inflater, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-    val view = getActivity()?.findViewById<View>(R.id.imageViewToolbar)
+        _binding = FragmentTrainingBinding.inflate(inflater, container, false)
 
-    if (view is ImageView) {
-      val imageView = view
-      imageView.setImageResource(R.drawable.running)
+        val view = getActivity()?.findViewById<View>(R.id.imageViewToolbar)
+
+        if (view is ImageView) {
+            val imageView = view
+            imageView.setImageResource(R.drawable.running)
+        }
+
+        return binding.root
     }
 
-    return binding.root
-  }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-override fun onDestroyView() {
+    }
+
+    override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }

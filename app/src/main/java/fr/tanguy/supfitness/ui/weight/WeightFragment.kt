@@ -1,6 +1,7 @@
 package fr.tanguy.supfitness.ui.weight
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,19 +19,13 @@ import fr.tanguy.supfitness.utils.SwipeToDelete
 import android.view.Gravity
 
 import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.content.SharedPreferences
 import android.widget.*
 import fr.tanguy.supfitness.MainActivity
 import fr.tanguy.supfitness.database.AppDatabase
 import fr.tanguy.supfitness.databinding.FragmentWeightBinding
 import java.util.*
 import kotlin.math.roundToInt
-import android.content.Context.MODE_PRIVATE
-
-import android.content.SharedPreferences
-
-
-
-
 
 class WeightFragment : Fragment() {
 
@@ -57,6 +52,9 @@ class WeightFragment : Fragment() {
         val weightDao = (db as AppDatabase).weightDao()
 
         WeightHelper.initWeight(weightDao.getAll())
+
+        val sharedPref: SharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPref.edit()
 
         val allWeight = WeightHelper.getAllWeights()
         val adapter = WeightAdapter(allWeight)
@@ -129,7 +127,7 @@ class WeightFragment : Fragment() {
 
             val popupWeightDatePicker: DatePicker =
                 popupView.findViewById(R.id.popupWeightDatePicker)
-            var popupWeightValue = popupWeightEdit.text.toString().toDouble()
+            var popupWeightValue: Double
 
             // LEFT DOUBLE
             val popupWeightLeftDoubleButton: Button =
@@ -192,6 +190,9 @@ class WeightFragment : Fragment() {
                         )
                     )
                 )
+
+                editor.putBoolean("current-weight-saved", true)
+                editor.apply()
 
                 if (weightDao.getAll().isEmpty()) {
                     weightEmptyItems.visibility = TextView.VISIBLE
