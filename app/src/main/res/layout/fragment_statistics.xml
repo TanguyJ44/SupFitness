@@ -209,7 +209,7 @@
         app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toEndOf="@+id/rectViewCard3"
         app:layout_constraintTop_toBottomOf="@+id/subtitleCard2"
-        app:layout_constraintVertical_bias="0.155" />
+        app:layout_constraintVertical_bias="0.150" />
 
     <TextView
         android:id="@+id/titleCard4"

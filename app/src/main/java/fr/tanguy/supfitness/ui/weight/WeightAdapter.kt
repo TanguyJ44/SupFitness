@@ -25,7 +25,7 @@ class WeightAdapter(
         val currentItem = weightList[index]
 
         holder.weightListWeight.text = "${currentItem.weight}"
-        holder.weightListDate.text = "${currentItem.date?.date} / ${currentItem.date?.month} / ${currentItem.date?.year}"
+        holder.weightListDate.text = "${currentItem.date?.date} / ${currentItem.date?.month!! + 1} / ${currentItem.date?.year}"
     }
 
     override fun getItemCount() = weightList.size

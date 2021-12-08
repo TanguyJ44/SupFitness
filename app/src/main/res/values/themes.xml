@@ -14,9 +14,18 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="DatePicker" >
+    <style name="DatePicker">
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
     </style>
+
+    <style name="Theme.SupFitness.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.SupFitness.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.SupFitness.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

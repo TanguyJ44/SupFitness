@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPref = getPreferences(Context.MODE_PRIVATE)
+        sharedPref = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         editor = sharedPref.edit()
 
         db = Room.databaseBuilder(
@@ -48,9 +48,7 @@ class MainActivity : AppCompatActivity() {
             AppDatabase::class.java, "supfitness"
         ).allowMainThreadQueries().build()
 
-        if (sharedPref.getBoolean("notif-alarm", false)) {
-            weightAlarmNotif()
-        }
+        weightAlarmNotif()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

@@ -53,7 +53,7 @@ class WeightFragment : Fragment() {
 
         WeightHelper.initWeight(weightDao.getAll())
 
-        val sharedPref: SharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        val sharedPref: SharedPreferences = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPref.edit()
 
         val allWeight = WeightHelper.getAllWeights()
@@ -185,13 +185,15 @@ class WeightFragment : Fragment() {
                         popupWeightValue,
                         Date(
                             popupWeightDatePicker.year,
-                            popupWeightDatePicker.month + 1,
+                            popupWeightDatePicker.month,
                             popupWeightDatePicker.dayOfMonth
                         )
                     )
                 )
 
-                editor.putBoolean("current-weight-saved", true)
+                val currentDate = "${Date().date}/${Date().month}/${Date().year}"
+
+                editor.putString("current-weight-saved", currentDate)
                 editor.apply()
 
                 if (weightDao.getAll().isEmpty()) {
