@@ -29,7 +29,7 @@
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:visibility="gone"
-        android:text="Pour ajouter votre premier poids,\n utiliser le bouton (+) ci-dessous"
+        android:text="@string/weight_empty"
         app:layout_constraintBottom_toBottomOf="@+id/weightList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,9 @@
         app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/weightList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:focusable="true"
+        tools:ignore="ContentDescription" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

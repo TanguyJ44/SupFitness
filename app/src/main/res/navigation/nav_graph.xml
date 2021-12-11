@@ -10,10 +10,4 @@
         android:name="fr.tanguy.supfitness.training.MapsFragment"
         tools:layout="@layout/fragment_maps">
     </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="fr.tanguy.supfitness.training.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-    </fragment>
 </navigation>

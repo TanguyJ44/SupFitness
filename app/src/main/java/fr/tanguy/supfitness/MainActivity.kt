@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var db: RoomDatabase
 
-    lateinit var sharedPref: SharedPreferences
-    lateinit var editor: SharedPreferences.Editor
+    private lateinit var sharedPref: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -6,81 +6,66 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/trainingTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Entrainement"
+            android:text="@string/training_title"
             android:textColor="@color/light_blue"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
             android:paddingHorizontal="16dp">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/startButton"
+                android:id="@+id/pauseButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:backgroundTint="@color/black"
                 android:clickable="true"
+                android:focusable="true"
                 android:src="@drawable/ic_baseline_pause_24"
-                android:background="@color/light_blue"
-                app:fabCustomSize="70dp"
-                app:maxImageSize="40dp"
-                app:tint="@color/white" />
+                app:fabCustomSize="50dp"
+                app:maxImageSize="25dp"
+                app:tint="@color/white"
+                tools:ignore="ContentDescription" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/startButton2"
+                android:id="@+id/stopButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/red"
                 android:clickable="true"
+                android:focusable="true"
                 android:src="@drawable/ic_baseline_stop_24"
-                android:background="@color/light_blue"
-                app:fabCustomSize="70dp"
-                app:maxImageSize="40dp"
-                app:tint="@color/white" />
+                app:fabCustomSize="50dp"
+                app:maxImageSize="25dp"
+                app:tint="@color/white"
+                tools:ignore="ContentDescription" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/numberOfStepTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:paddingStart="16dp"
-            android:text="Number of step: "
-            android:textSize="16sp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/totalDistanceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:text="Total distance: "
-            android:textSize="16sp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/averagePaceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:text="Average pace: "
-            android:layout_marginBottom="16dp"
-            android:textSize="16sp"
-            android:textStyle="bold" />
 
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:ignore="FragmentTagUsage" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

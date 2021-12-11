@@ -1,5 +1,6 @@
 package fr.tanguy.supfitness.ui.statistics
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,6 @@ import com.jjoe64.graphview.series.LineGraphSeries
 import com.jjoe64.graphview.GraphView
 
 import fr.tanguy.supfitness.databinding.FragmentStatisticsBinding
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
 import com.jjoe64.graphview.series.DataPoint
 import fr.tanguy.supfitness.ui.weight.WeightHelper
 import java.text.NumberFormat
@@ -21,6 +21,11 @@ import java.util.*
 import com.jjoe64.graphview.DefaultLabelFormatter
 import java.text.SimpleDateFormat
 
+/*
+*
+* TODO : Retravailler la classe : améliorer les performances et la propreté du code
+*
+* */
 
 class StatisticsFragment : Fragment() {
 
@@ -46,6 +51,7 @@ class StatisticsFragment : Fragment() {
         return root
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -54,14 +60,12 @@ class StatisticsFragment : Fragment() {
         statCalc90Days()
         statCalcTotal()
 
-        val mSeries: LineGraphSeries<DataPoint?> = LineGraphSeries()
-
         val graph: GraphView = requireView().findViewById(R.id.graph) as GraphView
 
-        val dataList = Array(WeightHelper.getSize()){ DataPoint(0.0, 0.0) }
+        val dataList = Array(WeightHelper.getSize()) { DataPoint(0.0, 0.0) }
 
         var calendar = Calendar.getInstance()
-        var date = calendar.time
+        var date: Date
 
         var index = 0
         for (weight in WeightHelper.getAllWeights()) {
@@ -79,7 +83,7 @@ class StatisticsFragment : Fragment() {
 
         graph.addSeries(series)
 
-        val sdf:SimpleDateFormat = SimpleDateFormat("dd/MM/yy")
+        val sdf = SimpleDateFormat("dd/MM/yy")
 
         graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
             override fun formatLabel(value: Double, isValueX: Boolean): String {
@@ -91,7 +95,7 @@ class StatisticsFragment : Fragment() {
             }
         }
 
-        graph.gridLabelRenderer.setHorizontalLabelsAngle(1);
+        graph.gridLabelRenderer.setHorizontalLabelsAngle(1)
 
         if (WeightHelper.getSize() > 0) {
 
@@ -113,8 +117,8 @@ class StatisticsFragment : Fragment() {
 
         graph.legendRenderer.isVisible = false
 
-        graph.viewport.isScalable = true;
-        graph.viewport.setScalableY(true);
+        graph.viewport.isScalable = true
+        graph.viewport.setScalableY(true)
         graph.viewport.isScrollable = true
         graph.viewport.setScrollableY(true)
     }
@@ -125,10 +129,11 @@ class StatisticsFragment : Fragment() {
         return cal
     }
 
+    @SuppressLint("SetTextI18n")
     private fun statCalc7Days() {
         val titleCard1: TextView = requireView().findViewById(R.id.titleCard1)
         val maxDate = Date()
-        val minDate = Date(Date().year, Date().month, Date().date-7)
+        val minDate = Date(Date().year, Date().month, Date().date - 7)
         lateinit var checkDate: Date
         var totalWeight = 0.0
         var countWeight = 0
@@ -152,10 +157,11 @@ class StatisticsFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun statCalc30Days() {
         val titleCard2: TextView = requireView().findViewById(R.id.titleCard2)
         val maxDate = Date()
-        val minDate = Date(Date().year, Date().month, Date().date-30)
+        val minDate = Date(Date().year, Date().month, Date().date - 30)
         lateinit var checkDate: Date
         var totalWeight = 0.0
         var countWeight = 0
@@ -179,10 +185,11 @@ class StatisticsFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun statCalc90Days() {
         val titleCard3: TextView = requireView().findViewById(R.id.titleCard3)
         val maxDate = Date()
-        val minDate = Date(Date().year, Date().month, Date().date-90)
+        val minDate = Date(Date().year, Date().month, Date().date - 90)
         lateinit var checkDate: Date
         var totalWeight = 0.0
         var countWeight = 0
@@ -206,9 +213,10 @@ class StatisticsFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun statCalcTotal() {
         val titleCard4: TextView = requireView().findViewById(R.id.titleCard4)
-        var averageList: MutableList<Double> = mutableListOf()
+        val averageList: MutableList<Double> = mutableListOf()
         var countWeight = 0
 
         for (weight in WeightHelper.getAllWeights()) {

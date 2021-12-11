@@ -29,15 +29,14 @@ class TrainingFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentTrainingBinding.inflate(inflater, container, false)
 
-        val view = getActivity()?.findViewById<View>(R.id.imageViewToolbar)
+        val view = activity?.findViewById<View>(R.id.imageViewToolbar)
 
         if (view is ImageView) {
-            val imageView = view
-            imageView.setImageResource(R.drawable.running)
+            view.setImageResource(R.drawable.running)
         }
 
         return binding.root
@@ -46,7 +45,7 @@ class TrainingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var startTimer = 5
+        var startTimer: Int
 
         val countStart: TextView = requireView().findViewById(R.id.countStart)
         val startButton: FloatingActionButton = requireView().findViewById(R.id.startButton)
@@ -68,7 +67,7 @@ class TrainingFragment : Fragment() {
                     trainingListButton.visibility = Button.VISIBLE
 
                     val vibrator = requireActivity().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
-                    vibrator!!.vibrate(400);
+                    vibrator!!.vibrate(400)
 
                     val trainingActivityIntent = Intent(requireActivity(), TrainingActivity::class.java)
                     startActivity(trainingActivityIntent)

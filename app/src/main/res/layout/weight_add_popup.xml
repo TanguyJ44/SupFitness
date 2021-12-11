@@ -13,9 +13,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:text="Ajouter un poids"
+        android:text="@string/weight_popup_add"
         android:textColor="@color/white"
-        android:textSize="18dp" />
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/popupWeightCloseButton"
@@ -24,7 +24,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="220dp"
         android:background="@android:color/transparent"
-        android:drawableRight="@drawable/ic_baseline_clear"
+        android:drawableEnd="@drawable/ic_baseline_clear"
         android:drawableTint="@color/white"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -38,8 +38,7 @@
         android:layout_marginTop="50dp"
         android:backgroundTint="@color/light_blue"
         android:drawableTop="@drawable/ic_baseline_keyboard_double_arrow_left_24"
-        android:drawableTint="@color/white"
-        android:text="" />
+        android:drawableTint="@color/white" />
 
     <Button
         android:id="@+id/popupWeightLeftSimpleButton"
@@ -51,8 +50,7 @@
         android:layout_marginTop="50dp"
         android:backgroundTint="@color/light_blue"
         android:drawableTop="@drawable/ic_baseline_keyboard_arrow_left_24"
-        android:drawableTint="@color/white"
-        android:text="" />
+        android:drawableTint="@color/white" />
 
     <EditText
         android:id="@+id/popupWeightEdit"
@@ -66,10 +64,12 @@
         android:ems="5"
         android:fontFamily="@font/digital"
         android:gravity="center"
+        android:importantForAutofill="no"
         android:inputType="numberDecimal"
         android:maxLength="5"
-        android:text="50.0"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:text="@string/weight_popup_default_value"
+        tools:ignore="LabelFor" />
 
     <Button
         android:id="@+id/popupWeightRightSimpleButton"
@@ -81,8 +81,7 @@
         android:layout_marginStart="200dp"
         android:backgroundTint="@color/light_blue"
         android:drawableTop="@drawable/ic_baseline_keyboard_arrow_right_24"
-        android:drawableTint="@color/white"
-        android:text="" />
+        android:drawableTint="@color/white" />
 
     <Button
         android:id="@+id/popupWeightRightDoubleButton"
@@ -94,8 +93,7 @@
         android:layout_marginStart="243dp"
         android:backgroundTint="@color/light_blue"
         android:drawableTop="@drawable/ic_baseline_keyboard_double_arrow_right_24"
-        android:drawableTint="@color/white"
-        android:text="" />
+        android:drawableTint="@color/white" />
 
     <DatePicker
         android:id="@+id/popupWeightDatePicker"
@@ -121,7 +119,7 @@
         android:layout_marginBottom="20dp"
         android:textColor="@color/light_blue"
         android:backgroundTint="@color/white"
-        android:text="Ajouter" />
+        android:text="@string/weight_popup_btn_add" />
 
 
 

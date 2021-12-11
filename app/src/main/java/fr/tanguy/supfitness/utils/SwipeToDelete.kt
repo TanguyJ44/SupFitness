@@ -14,7 +14,7 @@ import fr.tanguy.supfitness.database.WeightDao
 import fr.tanguy.supfitness.ui.weight.WeightHelper.getAllWeights
 import fr.tanguy.supfitness.ui.weight.WeightHelper.removeItem
 
-class SwipeToDelete(mContext: Context, private val mAdapter: WeightAdapter, val weightDao: WeightDao, val itemText: TextView) :
+class SwipeToDelete(mContext: Context, private val mAdapter: WeightAdapter, private val weightDao: WeightDao, private val itemText: TextView) :
     ItemTouchHelper.Callback() {
     private val mClearPaint: Paint = Paint()
     private val mBackground: ColorDrawable = ColorDrawable()
