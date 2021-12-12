@@ -1,7 +1,9 @@
 package fr.tanguy.supfitness.ui.training
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
@@ -16,6 +18,8 @@ import fr.tanguy.supfitness.R
 import fr.tanguy.supfitness.databinding.FragmentTrainingBinding
 
 import android.os.Vibrator
+import androidx.annotation.RequiresApi
+import com.vmadalin.easypermissions.EasyPermissions
 import fr.tanguy.supfitness.TrainingActivity
 
 
@@ -42,6 +46,7 @@ class TrainingFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -52,28 +57,62 @@ class TrainingFragment : Fragment() {
         val trainingListButton: Button = requireView().findViewById(R.id.trainingListButton)
 
         startButton.setOnClickListener {
-            startButton.visibility = FloatingActionButton.GONE
-            trainingListButton.visibility = Button.GONE
 
-            startTimer = 5
+            val isActivityRecognitionPermissionFree = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
+            val isActivityRecognitionPermissionGranted = EasyPermissions.hasPermissions(
+                requireActivity(),
+                Manifest.permission.ACTIVITY_RECOGNITION
+            )
 
-            val timer = object: CountDownTimer(5000, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    countStart.text = "$startTimer"
-                    startTimer -= 1
+            if (EasyPermissions.hasPermissions(
+                    requireActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                && (isActivityRecognitionPermissionFree || isActivityRecognitionPermissionGranted)
+            ) {
+
+                startButton.visibility = FloatingActionButton.GONE
+                trainingListButton.visibility = Button.GONE
+
+                startTimer = 5
+
+                val timer = object : CountDownTimer(5000, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        countStart.text = "$startTimer"
+                        startTimer -= 1
+                    }
+
+                    override fun onFinish() {
+                        startButton.visibility = FloatingActionButton.VISIBLE
+                        trainingListButton.visibility = Button.VISIBLE
+
+                        val vibrator =
+                            requireActivity().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
+                        vibrator!!.vibrate(400)
+
+                        val trainingActivityIntent =
+                            Intent(requireActivity(), TrainingActivity::class.java)
+                        startActivity(trainingActivityIntent)
+                    }
                 }
-                override fun onFinish() {
-                    startButton.visibility = FloatingActionButton.VISIBLE
-                    trainingListButton.visibility = Button.VISIBLE
+                timer.start()
 
-                    val vibrator = requireActivity().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
-                    vibrator!!.vibrate(400)
-
-                    val trainingActivityIntent = Intent(requireActivity(), TrainingActivity::class.java)
-                    startActivity(trainingActivityIntent)
-                }
+            } else {
+                EasyPermissions.requestPermissions(
+                    host = this,
+                    rationale = "For showing your current location on the map.",
+                    requestCode = 1,
+                    perms = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+                )
+                EasyPermissions.requestPermissions(
+                    host = this,
+                    rationale = "For showing your step counts and calculate the average pace.",
+                    requestCode = 2,
+                    perms = arrayOf(Manifest.permission.ACTIVITY_RECOGNITION)
+                )
             }
-            timer.start()
+
+
         }
 
     }

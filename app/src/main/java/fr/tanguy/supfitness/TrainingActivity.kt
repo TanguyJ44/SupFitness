@@ -1,6 +1,7 @@
 package fr.tanguy.supfitness
 
 import android.Manifest
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
@@ -44,7 +45,7 @@ class TrainingActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCal
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var polylineOptions = PolylineOptions()
-    private val locationCallback = object: LocationCallback() {
+    private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             super.onLocationResult(locationResult)
             locationResult ?: return
@@ -52,7 +53,14 @@ class TrainingActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCal
             addLocationToRoute(locationResult.locations)
 
             locationResult.locations.forEach {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 15F))
+                mMap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            it.latitude,
+                            it.longitude
+                        ), 15F
+                    )
+                )
             }
         }
     }
@@ -77,8 +85,10 @@ class TrainingActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCal
 
         val pauseButton: FloatingActionButton = findViewById(R.id.pauseButton)
         pauseButton.setOnClickListener {
-            Toast.makeText(this, "Maintenez le bouton pause appuyé pour arrêter / reprendre l'entrainement",
-                Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this, "Maintenez le bouton pause appuyé pour arrêter / reprendre l'entrainement",
+                Toast.LENGTH_LONG
+            ).show()
         }
         pauseButton.setOnLongClickListener {
             if (!onPause) {
@@ -93,8 +103,10 @@ class TrainingActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCal
 
         val stopButton: FloatingActionButton = findViewById(R.id.stopButton)
         stopButton.setOnClickListener {
-            Toast.makeText(this, "Maintenez le bouton stop appuyé pour arrêter l'entrainement",
-                Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this, "Maintenez le bouton stop appuyé pour arrêter l'entrainement",
+                Toast.LENGTH_LONG
+            ).show()
         }
         stopButton.setOnLongClickListener {
             stopTracking(true)
@@ -107,10 +119,14 @@ class TrainingActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCal
     private fun startTracking() {
 
         val isActivityRecognitionPermissionFree = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
-        val isActivityRecognitionPermissionGranted = EasyPermissions.hasPermissions(this,
+        val isActivityRecognitionPermissionGranted = EasyPermissions.hasPermissions(
+            this,
             Manifest.permission.ACTIVITY_RECOGNITION
         )
-        Log.d("TAG", "Is ACTIVITY_RECOGNITION permission granted $isActivityRecognitionPermissionGranted")
+        Log.d(
+            "TAG",
+            "Is ACTIVITY_RECOGNITION permission granted $isActivityRecognitionPermissionGranted"
+        )
         if (isActivityRecognitionPermissionFree || isActivityRecognitionPermissionGranted) {
             setupStepCounterListener()
             setupLocationChangeListener()
@@ -152,21 +168,25 @@ class TrainingActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCal
         locationRequest.interval = 5000 // 5000ms (5s)
         if (ActivityCompat.checkSelfPermission(
                 this,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
         }
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
     }
 
     @AfterPermissionGranted(REQUEST_CODE_FINE_LOCATION)
     private fun showUserLocation() {
         if (ActivityCompat.checkSelfPermission(
                 this,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
@@ -175,7 +195,6 @@ class TrainingActivity : AppCompatActivity(), SensorEventListener, OnMapReadyCal
             return
         }
         mMap.isMyLocationEnabled = true
-
     }
 
     fun addLocationToRoute(locations: List<Location>) {

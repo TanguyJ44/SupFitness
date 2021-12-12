@@ -139,7 +139,7 @@ class StatisticsFragment : Fragment() {
         var countWeight = 0
 
         for (weight in WeightHelper.getAllWeights()) {
-            checkDate = Date(weight.date!!.year - 1900, weight.date.month - 1, weight.date.date)
+            checkDate = Date(weight.date!!.year - 1900, weight.date.month, weight.date.date)
 
             if (checkDate.after(minDate) && checkDate.before(maxDate)) {
                 totalWeight += weight.weight!!
@@ -167,7 +167,7 @@ class StatisticsFragment : Fragment() {
         var countWeight = 0
 
         for (weight in WeightHelper.getAllWeights()) {
-            checkDate = Date(weight.date!!.year - 1900, weight.date.month - 1, weight.date.date)
+            checkDate = Date(weight.date!!.year - 1900, weight.date.month, weight.date.date)
 
             if (checkDate.after(minDate) && checkDate.before(maxDate)) {
                 totalWeight += weight.weight!!
@@ -195,7 +195,7 @@ class StatisticsFragment : Fragment() {
         var countWeight = 0
 
         for (weight in WeightHelper.getAllWeights()) {
-            checkDate = Date(weight.date!!.year - 1900, weight.date.month - 1, weight.date.date)
+            checkDate = Date(weight.date!!.year - 1900, weight.date.month, weight.date.date)
 
             if (checkDate.after(minDate) && checkDate.before(maxDate)) {
                 totalWeight += weight.weight!!
